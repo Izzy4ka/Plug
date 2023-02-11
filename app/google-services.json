@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "302821652270",
+    "project_id": "plug-ffc93",
+    "storage_bucket": "plug-ffc93.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302821652270:android:780bea07f31f9f14beacbf",
+        "android_client_info": {
+          "package_name": "com.example.plug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302821652270-ck8uoh1s9a33evf211ppd71t05pqvl1r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHVihZPx82z-1vOfMF8sufhtXosn3n9xQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302821652270-ck8uoh1s9a33evf211ppd71t05pqvl1r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

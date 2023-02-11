@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Plug</string>
+    <string name="try_again">Try again</string>
+    <string name="not_network">No internet access!</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="news_image">NewsImage</string>
+</resources>
