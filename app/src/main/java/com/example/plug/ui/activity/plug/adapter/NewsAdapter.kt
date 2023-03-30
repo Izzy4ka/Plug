@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.plug.databinding.ItemNewsBinding
-import com.example.plug.news.entity.NewsEntity
+import com.example.plug.entity.news.entity.NewsEntity
 
 class NewsAdapter(private val list: List<NewsEntity>) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 

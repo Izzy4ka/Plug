@@ -1,16 +1,8 @@
-package com.example.plug.news.service
+package com.example.plug.entity.news.service
 
-import com.example.plug.news.entity.NewsEntity
+import com.example.plug.entity.news.entity.NewsEntity
 
-class NewsService private constructor() {
-
-    companion object {
-        private val newsService: NewsService? = null
-
-        fun getInstance(): NewsService {
-            return newsService ?: NewsService()
-        }
-    }
+object NewsService  {
 
     private val news = mutableListOf<NewsEntity>()
 

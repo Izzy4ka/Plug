@@ -1,4 +1,4 @@
-package com.example.plug.news.entity
+package com.example.plug.entity.news.entity
 
 data class NewsEntity(
     val id: Int,

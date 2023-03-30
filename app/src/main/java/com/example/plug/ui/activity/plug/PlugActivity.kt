@@ -3,12 +3,12 @@ package com.example.plug.ui.activity.plug
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.plug.databinding.ActivityPlugBinding
-import com.example.plug.news.service.NewsService
+import com.example.plug.entity.news.service.NewsService
 import com.example.plug.ui.activity.plug.adapter.NewsAdapter
 
 class PlugActivity : AppCompatActivity() {
 
-    private val newsService = NewsService.getInstance()
+    private val newsService = NewsService
 
     private val binding: ActivityPlugBinding by lazy {
         ActivityPlugBinding.inflate(layoutInflater)
