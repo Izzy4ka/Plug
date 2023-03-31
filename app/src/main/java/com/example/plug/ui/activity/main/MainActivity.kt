@@ -40,19 +40,19 @@ class MainActivity : AppCompatActivity() {
         Prefs(sharedPreferences)
     }
 
-    private val binding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
-    }
+    private var binding: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+        binding = ActivityMainBinding.inflate(layoutInflater).also {
+            setContentView(it.root)
+        }
         initBtn(savedInstanceState)
         checkLink(savedInstanceState)
     }
 
     private fun initBtn(savedInstanceState: Bundle?) {
-        binding.partResult.btnTryAgain.setOnClickListener {
+        requireBinding().partResult.btnTryAgain.setOnClickListener {
             checkInternet(savedInstanceState)
         }
     }
@@ -67,12 +67,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkInternet(savedInstanceState: Bundle?) {
         if (isInternetAvailable()) {
-            binding.webView.visible()
-            binding.partResult.root.gone()
+            requireBinding().webView.visible()
+            requireBinding().partResult.root.gone()
             initWeb(savedInstanceState)
         } else {
-            binding.webView.gone()
-            binding.partResult.root.visible()
+            requireBinding().webView.gone()
+            requireBinding().partResult.root.visible()
         }
     }
 
@@ -107,12 +107,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun initFirebaseConfig(savedInstanceState: Bundle?) {
         val url = remoteConfig.getString(URL)
-        if (url.isEmpty() || isEmulator() || isHaveSimCard()) {
-            startActivity(Intent(this, PlugActivity::class.java))
+        if (url.isEmpty() || isEmulator()) {
+            startPlug()
         } else {
             saveLink(url)
             initWeb(savedInstanceState)
         }
+    }
+
+    private fun startPlug() {
+        startActivity(Intent(this, PlugActivity::class.java))
+        finish()
     }
 
     private fun saveLink(url: String) {
@@ -139,22 +144,18 @@ class MainActivity : AppCompatActivity() {
                 || Build.PRODUCT.contains("simulator"))
 
 
-    private fun isHaveSimCard(): Boolean =
-        TelephonyManager.SIM_STATE_ABSENT !=
-                (getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simState
-
     private fun initWeb(savedInstanceState: Bundle?) {
-        binding.webView.webViewClient = WebViewClient()
-        binding.webView.settings.javaScriptEnabled = true
+        requireBinding().webView.webViewClient = WebViewClient()
+        requireBinding().webView.settings.javaScriptEnabled = true
         if (savedInstanceState != null)
-            binding.webView.restoreState(savedInstanceState)
+            requireBinding().webView.restoreState(savedInstanceState)
         else
-            binding.webView.loadUrl(prefs.link)
-        binding.webView.settings.domStorageEnabled = true
-        binding.webView.settings.javaScriptCanOpenWindowsAutomatically = true
+            requireBinding().webView.loadUrl(prefs.link)
+        requireBinding().webView.settings.domStorageEnabled = true
+        requireBinding().webView.settings.javaScriptCanOpenWindowsAutomatically = true
         val cookieManager = CookieManager.getInstance()
         cookieManager.setAcceptCookie(true)
-        with(binding.webView.settings) {
+        with(requireBinding().webView.settings) {
             loadWithOverviewMode = true
             domStorageEnabled = true
             useWideViewPort = true
@@ -167,6 +168,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
-        binding.webView.saveState(outState)
+        requireBinding().webView.saveState(outState)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+
+    private fun requireBinding(): ActivityMainBinding = checkNotNull(binding)
 }

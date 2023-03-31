@@ -5,5 +5,4 @@ data class NewsEntity(
     val image: String,
     val title: String,
     val description:String
-
 )

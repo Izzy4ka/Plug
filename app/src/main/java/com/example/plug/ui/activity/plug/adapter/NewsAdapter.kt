@@ -1,13 +1,18 @@
 package com.example.plug.ui.activity.plug.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.plug.databinding.ItemNewsBinding
 import com.example.plug.entity.news.entity.NewsEntity
 
-class NewsAdapter(private val list: List<NewsEntity>) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter(
+    private val list: List<NewsEntity>,
+    private val detailInfo: DetailInfo
+) :
+    RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     inner class NewsViewHolder(private val binding: ItemNewsBinding) : RecyclerView.ViewHolder(
         binding.root
@@ -30,7 +35,18 @@ class NewsAdapter(private val list: List<NewsEntity>) : RecyclerView.Adapter<New
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         holder.onBind(position)
+        initListener(holder.itemView, position)
+    }
+
+    private fun initListener(view: View, position: Int) {
+        view.setOnClickListener {
+            detailInfo.openDetail(list[position].id)
+        }
     }
 
     override fun getItemCount(): Int = list.size
+
+    interface DetailInfo {
+        fun openDetail(id: Int)
+    }
 }
