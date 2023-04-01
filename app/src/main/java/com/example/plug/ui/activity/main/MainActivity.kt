@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ import com.example.plug.util.visible
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 
 const val APP_PREFERENCES = "App_preferences"
 
@@ -28,13 +30,19 @@ const val URL = "url"
 
 
 class MainActivity : AppCompatActivity() {
+
     private val sharedPreferences: SharedPreferences by lazy {
         getSharedPreferences(
             APP_PREFERENCES,
             Application.MODE_PRIVATE
         )
     }
+
     private val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
+
+    private val configSetting = remoteConfigSettings {
+        minimumFetchIntervalInSeconds = 60
+    }
 
     private val prefs: Prefs by lazy {
         Prefs(sharedPreferences)
@@ -47,8 +55,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater).also {
             setContentView(it.root)
         }
+        initConfigSetting()
         initBtn(savedInstanceState)
         checkLink(savedInstanceState)
+    }
+
+    private fun initConfigSetting() {
+        remoteConfig.setConfigSettingsAsync(configSetting)
     }
 
     private fun initBtn(savedInstanceState: Bundle?) {
