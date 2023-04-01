@@ -9,7 +9,6 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
@@ -121,7 +120,6 @@ class MainActivity : AppCompatActivity() {
         remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val url = remoteConfig.getString(URL)
-                Log.d("Aboba", "url = $url")
                 if (url.isEmpty() || isEmulator()) {
                     startPlug()
                 } else {
