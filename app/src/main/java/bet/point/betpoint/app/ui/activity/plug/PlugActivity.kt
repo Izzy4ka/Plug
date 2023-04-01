@@ -1,12 +1,12 @@
-package com.example.plug.ui.activity.plug
+package bet.point.betpoint.app.ui.activity.plug
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.plug.R
-import com.example.plug.databinding.ActivityPlugBinding
-import com.example.plug.entity.news.service.NewsService
-import com.example.plug.ui.activity.plug.adapter.NewsAdapter
-import com.example.plug.ui.fragment.detail.DetailFragment
+import bet.point.betpoint.app.R
+import bet.point.betpoint.app.databinding.ActivityPlugBinding
+import bet.point.betpoint.app.entity.news.service.NewsService
+import bet.point.betpoint.app.ui.activity.plug.adapter.NewsAdapter
+import bet.point.betpoint.app.ui.fragment.detail.DetailFragment
 
 class PlugActivity : AppCompatActivity(), NewsAdapter.DetailInfo {
 

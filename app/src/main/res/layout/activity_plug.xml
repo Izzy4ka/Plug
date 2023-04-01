@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.plug.PlugActivity">
+    tools:context="bet.point.betpoint.app.ui.activity.plug.PlugActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_news"

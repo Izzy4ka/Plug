@@ -1,4 +1,4 @@
-package com.example.plug.util
+package bet.point.betpoint.app.util
 
 import android.view.View
 import androidx.core.view.isVisible

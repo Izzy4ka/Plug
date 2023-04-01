@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.plug'
+    namespace 'bet.point.betpoint.app'
     compileSdk 32
 
     defaultConfig {

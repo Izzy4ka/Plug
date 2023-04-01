@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.activity.main.MainActivity">
+    tools:context="bet.point.betpoint.app.ui.activity.main.MainActivity">
 
     <include
         android:id="@+id/part_result"

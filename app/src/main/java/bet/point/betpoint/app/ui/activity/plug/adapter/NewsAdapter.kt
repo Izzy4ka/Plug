@@ -1,12 +1,12 @@
-package com.example.plug.ui.activity.plug.adapter
+package bet.point.betpoint.app.ui.activity.plug.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import bet.point.betpoint.app.databinding.ItemNewsBinding
 import com.bumptech.glide.Glide
-import com.example.plug.databinding.ItemNewsBinding
-import com.example.plug.entity.news.entity.NewsEntity
+import bet.point.betpoint.app.entity.news.entity.NewsEntity
 
 class NewsAdapter(
     private val list: List<NewsEntity>,

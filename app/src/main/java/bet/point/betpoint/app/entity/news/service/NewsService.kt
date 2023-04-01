@@ -1,6 +1,6 @@
-package com.example.plug.entity.news.service
+package bet.point.betpoint.app.entity.news.service
 
-import com.example.plug.entity.news.entity.NewsEntity
+import bet.point.betpoint.app.entity.news.entity.NewsEntity
 
 object NewsService {
 

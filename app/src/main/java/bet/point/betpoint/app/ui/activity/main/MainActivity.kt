@@ -1,4 +1,4 @@
-package com.example.plug.ui.activity.main
+package bet.point.betpoint.app.ui.activity.main
 
 import android.app.Application
 import android.content.Context
@@ -9,16 +9,15 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.telephony.TelephonyManager
 import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import com.example.plug.databinding.ActivityMainBinding
-import com.example.plug.ui.activity.plug.PlugActivity
-import com.example.plug.util.Prefs
-import com.example.plug.util.gone
-import com.example.plug.util.visible
+import bet.point.betpoint.app.databinding.ActivityMainBinding
+import bet.point.betpoint.app.ui.activity.plug.PlugActivity
+import bet.point.betpoint.app.util.Prefs
+import bet.point.betpoint.app.util.gone
+import bet.point.betpoint.app.util.visible
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     private val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
 
     private val configSetting = remoteConfigSettings {
-        minimumFetchIntervalInSeconds = 60
+        minimumFetchIntervalInSeconds = 3600
     }
 
     private val prefs: Prefs by lazy {
@@ -119,14 +118,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initFirebaseConfig(savedInstanceState: Bundle?) {
-        val url = remoteConfig.getString(URL)
-        if (url.isEmpty() || isEmulator()) {
-            startPlug()
-        } else {
-            saveLink(url)
-            initWeb(savedInstanceState)
+        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val url = remoteConfig.getString(URL)
+                Log.d("Aboba", "url = $url")
+                if (url.isEmpty() || isEmulator()) {
+                    startPlug()
+                } else {
+                    saveLink(url)
+                    initWeb(savedInstanceState)
+                }
+            }
         }
     }
+
+
 
     private fun startPlug() {
         startActivity(Intent(this, PlugActivity::class.java))
