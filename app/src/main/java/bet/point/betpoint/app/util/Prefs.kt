@@ -7,12 +7,11 @@ class Prefs(
 ) {
 
     val link: String = sharedPreferences.getString(LINK, "") ?: ""
-
     fun setLink(link: String) {
         sharedPreferences.edit().putString(LINK, link).apply()
     }
 
     companion object {
-        const val LINK = "Link"
+        private const val LINK = "Link"
     }
 }

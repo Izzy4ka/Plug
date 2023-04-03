@@ -1,4 +1,4 @@
-package com.example.plug
+package bet.example.plug
 
 import org.junit.Test
 

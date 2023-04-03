@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         if (isInternetAvailable()) {
             requireBinding().webView.visible()
             requireBinding().partResult.root.gone()
-            initWeb(savedInstanceState)
+            initWeb(savedInstanceState,prefs.link)
         } else {
             requireBinding().webView.gone()
             requireBinding().partResult.root.visible()
@@ -124,13 +124,11 @@ class MainActivity : AppCompatActivity() {
                     startPlug()
                 } else {
                     saveLink(url)
-                    initWeb(savedInstanceState)
+                    initWeb(savedInstanceState,url)
                 }
             }
         }
     }
-
-
 
     private fun startPlug() {
         startActivity(Intent(this, PlugActivity::class.java))
@@ -161,13 +159,14 @@ class MainActivity : AppCompatActivity() {
                 || Build.PRODUCT.contains("simulator"))
 
 
-    private fun initWeb(savedInstanceState: Bundle?) {
+    private fun initWeb(savedInstanceState: Bundle?,url: String) {
         requireBinding().webView.webViewClient = WebViewClient()
         requireBinding().webView.settings.javaScriptEnabled = true
         if (savedInstanceState != null)
             requireBinding().webView.restoreState(savedInstanceState)
-        else
-            requireBinding().webView.loadUrl(prefs.link)
+        else{
+            requireBinding().webView.loadUrl(url)
+        }
         requireBinding().webView.settings.domStorageEnabled = true
         requireBinding().webView.settings.javaScriptCanOpenWindowsAutomatically = true
         val cookieManager = CookieManager.getInstance()

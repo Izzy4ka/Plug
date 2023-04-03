@@ -9,7 +9,6 @@ import bet.point.betpoint.app.ui.activity.plug.adapter.NewsAdapter
 import bet.point.betpoint.app.ui.fragment.detail.DetailFragment
 
 class PlugActivity : AppCompatActivity(), NewsAdapter.DetailInfo {
-
     private val newsService = NewsService
 
     private var binding: ActivityPlugBinding? = null
