@@ -8,12 +8,11 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.webkit.CookieManager
-import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import bet.point.betpoint.app.R
 import bet.point.betpoint.app.databinding.ActivityMainBinding
 import bet.point.betpoint.app.ui.activity.plug.PlugActivity
+import bet.point.betpoint.app.ui.fragment.webview.WebViewFragment
 import bet.point.betpoint.app.util.Prefs
 import bet.point.betpoint.app.util.gone
 import bet.point.betpoint.app.util.visible
@@ -54,37 +53,45 @@ class MainActivity : AppCompatActivity() {
             setContentView(it.root)
         }
         initConfigSetting()
-        initBtn(savedInstanceState)
-        checkLink(savedInstanceState)
+        initBtn()
+        checkLink()
     }
 
     private fun initConfigSetting() {
         remoteConfig.setConfigSettingsAsync(configSetting)
     }
 
-    private fun initBtn(savedInstanceState: Bundle?) {
+    private fun initBtn() {
         requireBinding().partResult.btnTryAgain.setOnClickListener {
-            checkInternet(savedInstanceState)
+            checkInternet()
         }
     }
 
-    private fun checkLink(savedInstanceState: Bundle?) {
+    private fun checkLink() {
         if (prefs.link.isEmpty()) {
-            initFirebaseConfig(savedInstanceState)
+            initFirebaseConfig()
         } else {
-            checkInternet(savedInstanceState)
+            checkInternet()
         }
     }
 
-    private fun checkInternet(savedInstanceState: Bundle?) {
+    private fun checkInternet() {
         if (isInternetAvailable()) {
-            requireBinding().webView.visible()
-            requireBinding().partResult.root.gone()
-            initWeb(savedInstanceState,prefs.link)
+            fragmentContainerVisible()
+            openWeb(prefs.link)
         } else {
-            requireBinding().webView.gone()
-            requireBinding().partResult.root.visible()
+            fragmentContainerGone()
         }
+    }
+
+    private fun fragmentContainerGone() {
+        requireBinding().fragmentContainer.gone()
+        requireBinding().partResult.root.visible()
+    }
+
+    private fun fragmentContainerVisible() {
+        requireBinding().fragmentContainer.visible()
+        requireBinding().partResult.root.gone()
     }
 
     private fun isInternetAvailable(): Boolean {
@@ -116,7 +123,7 @@ class MainActivity : AppCompatActivity() {
         return result
     }
 
-    private fun initFirebaseConfig(savedInstanceState: Bundle?) {
+    private fun initFirebaseConfig() {
         remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val url = remoteConfig.getString(URL)
@@ -124,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                     startPlug()
                 } else {
                     saveLink(url)
-                    initWeb(savedInstanceState,url)
+                    openWeb(url)
                 }
             }
         }
@@ -159,33 +166,11 @@ class MainActivity : AppCompatActivity() {
                 || Build.PRODUCT.contains("simulator"))
 
 
-    private fun initWeb(savedInstanceState: Bundle?,url: String) {
-        requireBinding().webView.webViewClient = WebViewClient()
-        requireBinding().webView.settings.javaScriptEnabled = true
-        if (savedInstanceState != null)
-            requireBinding().webView.restoreState(savedInstanceState)
-        else{
-            requireBinding().webView.loadUrl(url)
-        }
-        requireBinding().webView.settings.domStorageEnabled = true
-        requireBinding().webView.settings.javaScriptCanOpenWindowsAutomatically = true
-        val cookieManager = CookieManager.getInstance()
-        cookieManager.setAcceptCookie(true)
-        with(requireBinding().webView.settings) {
-            loadWithOverviewMode = true
-            domStorageEnabled = true
-            useWideViewPort = true
-            databaseEnabled = true
-            setSupportZoom(false)
-            allowFileAccess = true
-            allowContentAccess = true
-        }
+    private fun openWeb(url: String) {
+        val fragment = WebViewFragment.newInstance(url)
+        supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment).commit()
     }
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
-        requireBinding().webView.saveState(outState)
-    }
 
     override fun onDestroy() {
         super.onDestroy()

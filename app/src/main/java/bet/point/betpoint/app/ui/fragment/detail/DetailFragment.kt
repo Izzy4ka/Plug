@@ -17,13 +17,11 @@ class DetailFragment : Fragment() {
 
     private var binding: FragmentDetailBinding? = null
 
-
     private val service = NewsService
 
     private val newsEntity: NewsEntity by lazy {
         service.getNew(getIdNews())
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,8 +64,6 @@ class DetailFragment : Fragment() {
     private fun requireBinding(): FragmentDetailBinding = checkNotNull(binding)
 
     private fun getIdNews(): Int = requireArguments().getInt(ARG_PARAM_ID)
-
-
     companion object {
         @JvmStatic
         fun newInstance(id: Int) =
