@@ -31,11 +31,12 @@ class WebViewFragment : Fragment() {
     private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
     private var mCameraUri: Uri? = null
 
-        private val featuresPermissionCamera = registerForActivityResult(
+    private var webViewBundle: Bundle? = null
+
+    private val featuresPermissionCamera = registerForActivityResult(
         RequestPermission(),
         ::onGotPermissionResultForCamera
     )
-
 
     private val featuresIntent = registerForActivityResult(
         StartActivityForResult()
@@ -62,8 +63,14 @@ class WebViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView(savedInstanceState)
+        initView()
         initBtn()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        webViewBundle = Bundle()
+        requireBinding().webView.saveState(webViewBundle!!)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -89,15 +96,16 @@ class WebViewFragment : Fragment() {
             })
     }
 
-    private fun initView(savedInstanceState: Bundle?) {
+    private fun initView() {
         requireBinding().webView.webViewClient = WebViewClient()
         requireBinding().webView.webChromeClient = ChromeClient()
         requireBinding().webView.settings.javaScriptEnabled = true
-        if (savedInstanceState != null)
-            requireBinding().webView.restoreState(savedInstanceState)
-        else {
+        if (webViewBundle == null) {
             requireBinding().webView.loadUrl(getUrl())
+        } else {
+            requireBinding().webView.restoreState(webViewBundle!!)
         }
+
         requireBinding().webView.settings.domStorageEnabled = true
         requireBinding().webView.settings.javaScriptCanOpenWindowsAutomatically = true
         val cookieManager = CookieManager.getInstance()
